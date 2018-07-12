@@ -2,7 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
-
+const {generateMessage} = require('./utils/message');
 
 // Heroku sets process.env.PORT, otherwise use port 3000 locally
 const port = process.env.PORT || 3000;
@@ -42,17 +42,8 @@ io.on('connection', (socket) => {
   // });
 
   // Send a broadcast message saying a new user client joined
-  socket.broadcast.emit('newMessage', {
-    from: 'admin',
-    text: 'New user client has joined the Chat App',
-    createdAt: new Date().getTime()
-  });
-
-  socket.emit('newMessage', {
-    from: 'admin',
-    text: 'Welcome to the Chat App',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit('newMessage', generateMessage('admin','New user joined the Chat App'));
+  socket.emit('newMessage', generateMessage('admin','Welcome to the Chat App'));
 
   // Create custom listen event for createMessage from a user client
   socket.on('createMessage', (newMessage) => {
@@ -61,11 +52,7 @@ io.on('connection', (socket) => {
     // Send broadcast message to all user clients icluding the user
     // client that sent the message above, when a message is
     // received from a user client
-    io.emit('newMessage', {
-      from: newMessage.from,
-      text: newMessage.text,
-      createdAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(newMessage.from, newMessage.text));
 
     // Send broadcast message to all user clients except the one
     // that sent the message above.
