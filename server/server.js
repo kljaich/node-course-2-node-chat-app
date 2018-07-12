@@ -35,15 +35,23 @@ io.on('connection', (socket) => {
   // });
 
   // Create and send newMessage event to a user client
-  socket.emit('newMessage', {
-    from: 'admin@example.com',
-    text: 'You are getting removed from the chat room',
-    createdAt: 123
-  });
+  // socket.emit('newMessage', {
+  //   from: 'admin@example.com',
+  //   text: 'You are getting removed from the chat room',
+  //   createdAt: 123
+  // });
 
-  // Create listen event for createMessage from a user client
+  // Create custom listen event for createMessage from a user client
   socket.on('createMessage', (newMessage) => {
     console.log('createMessage', newMessage);
+
+    // Send broadcast message to all user clients when a message is
+    // received from a user client
+    io.emit('newMessage', {
+      from: newMessage.from,
+      text: newMessage.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   // Listen for builtin disconnect events from user clients

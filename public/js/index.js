@@ -7,16 +7,16 @@ socket.on('connect', function () {
   // Emit a createEmail event to the server after a
   // socket.io connection was established
   // socket.emit('createEmail', {
-  //   to: "yourMama@fuckyou",
-  //   text: "Take out the garbage you lazy fucker"
+  //   to: "mom@example.com",
+  //   text: "Take out the garbage you lazy son"
   // });
 
   // Emit a createMessage event to the server after a
   // socket.io connection was established
-  socket.emit('createMessage', {
-    from: "me@fuck.you",
-    text: "This is a test message for the Chat Room"
-  })
+  // socket.emit('createMessage', {
+  //   from: "me@example.you",
+  //   text: "This is a test message for the Chat Room"
+  // })
 });
 
 // Listen for builtin disconnect events from the server
